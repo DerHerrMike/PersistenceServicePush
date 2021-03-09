@@ -2,6 +2,9 @@ package persistenceMike;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class TextInput {
@@ -12,13 +15,13 @@ public class TextInput {
         this.persistenceService = persistenceService;
     }
 
-    public void input() throws IOException {
+    private void input() throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Bitte gib einen beliebigen Text ein: ");
         String text = scanner.nextLine();
-        File outputFile = new File("TextBeforeFormatting");
-        persistenceService.save(text, outputFile);
+        persistenceService.save(text, Paths.get("output/TextBeforeFormatting.txt").toFile());
     }
+
 
     public static void main(String[] args) throws IOException {
         TextInput textInput = new TextInput(new LineByLinePersistenceService());
