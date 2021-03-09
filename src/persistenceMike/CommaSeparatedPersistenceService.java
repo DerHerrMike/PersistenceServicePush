@@ -3,6 +3,7 @@ package persistenceMike;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class CommaSeparatedPersistenceService implements PersistenceService {
 
@@ -11,16 +12,15 @@ public class CommaSeparatedPersistenceService implements PersistenceService {
 
         String[] result = text.split(" ");
         StringBuilder sb = new StringBuilder();
-        int counter = 0;
-        while (counter < result.length) {
-            sb.append(result[counter]).append(",");
-            counter++;
+        for (String line : result) {
+            sb.append(line).append(",");
         }
-        try {
-            FileWriter fw = new FileWriter("TextWithCommas.txt");
-            fw.write(sb.toString());
-            fw.close();
+        if (Files.notExists(file.toPath())) {
+            Files.createFile(file.toPath());
+        }
 
+        try (FileWriter fw = new FileWriter(file)) {
+            fw.write(sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
