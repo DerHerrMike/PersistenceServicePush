@@ -1,6 +1,5 @@
 package persistenceMike;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,14 +18,18 @@ public class TextInput {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Bitte gib einen beliebigen Text ein: ");
         String text = scanner.nextLine();
-        persistenceService.save(text, Paths.get("output/TextBeforeFormatting.txt").toFile());
+
+        Path path = Paths.get("output");
+        if (Files.notExists(path)) {
+            var p = Files.createDirectories(path);
+        }
+
+        persistenceService.save(text, Paths.get(path.toString(),"TextBeforeFormatting.txt").toFile());
     }
 
 
     public static void main(String[] args) throws IOException {
         TextInput textInput = new TextInput(new LineByLinePersistenceService());
         textInput.input();
-//        TextInput forCommaSepa = new TextInput(new CommaSeparatedPersistenceService());
-//        forCommaSepa.input();
     }
 }
